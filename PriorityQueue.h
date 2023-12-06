@@ -10,12 +10,13 @@
 #include <queue>
 #include <unordered_map>
 
-template <class T>
+template<class T>
 class PriorityQueue {
     std::unordered_map<uint32_t, std::queue<T>> mPatients;
-    uint32_t mKey=0;
+    uint32_t mKey = 11;
 public:
-    PriorityQueue(uint32_t maxPriorityValue) : mPatients(std::unordered_map<uint32_t, std::queue<T>>(maxPriorityValue)) {
+    PriorityQueue(uint32_t maxPriorityValue) : mPatients(
+            std::unordered_map<uint32_t, std::queue<T>>(maxPriorityValue)) {
 
     }
 
@@ -29,19 +30,17 @@ public:
 
     void push(T value, uint32_t priority) {
         mPatients[priority].push(value);
+        mKey = mKey < priority ? mKey : priority;
     }
 
 
     T pop() {
-        T patient;
-        while(mPatients[mKey].empty() && mKey<mPatients.size()){
-            mKey++;
-        }
-        if(!mPatients[mKey].empty()){
-            patient=mPatients[mKey].front();
+            while(mKey<=10 && (!mPatients.count(mKey) || mPatients[mKey].empty())) {
+                mKey++;
+            }
+            T patient = mPatients[mKey].front();
             mPatients[mKey].pop();
-        }
-        return patient;
+            return patient;
     }
 
 
